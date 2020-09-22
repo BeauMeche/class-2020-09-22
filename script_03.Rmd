@@ -61,7 +61,7 @@ Second, read in and clean the new data, creating an object called either `sep_21
 # variable to make it easier to work with later on.
 
 sep_new <- 
-  read_excel("raw_data/class_enrollment_summary_by_term_9-16-2020.xlsx", 
+  read_excel("new_data/class_enrollment_summary_by_term_9-22-2020.xlsx", 
              skip = 3) %>% 
   clean_names() %>% 
   filter(! is.na(course_title)) %>% 
@@ -126,11 +126,11 @@ enrollment_change <- left_join(sep_old, sep_new,
 # enrollment decrease.
 
 top_inc <- enrollment_change %>% 
-  arrange(desc(en_change)) %>% 
+  arrange(desc(change)) %>% 
   slice_head(n = 5)
 
 top_dec <- enrollment_change %>% 
-  arrange(en_change) %>% 
+  arrange(change) %>% 
   slice_head(n = 5) 
 
 # then, I join together those tibbles using full_join which simply puts all rows
@@ -144,6 +144,7 @@ joined <- full_join(top_inc, top_dec) %>%
   labs(y = "Change in Enrollment",
        title = "Courses with Greatest Increase and Decrease in Enrollment") +
   theme(axis.title.y = element_blank())
+
 
 joined
 ```
